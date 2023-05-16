@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Lion School</string>
+    <string name="welcome">Welcome here</string>
+    <string name="teacher">Teacher</string>
+    <string name="GetStart">Get Started</string>
+</resources>
