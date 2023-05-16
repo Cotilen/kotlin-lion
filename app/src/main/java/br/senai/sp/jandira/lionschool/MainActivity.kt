@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.lionschool
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -17,6 +18,7 @@ import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -48,6 +50,8 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
+    val context = LocalContext.current
+
     Column(modifier = Modifier
         .background(Color(51, 71, 176))
         .fillMaxSize(), verticalArrangement = Arrangement.SpaceAround,
@@ -68,7 +72,9 @@ fun Greeting(name: String) {
                 fontSize = 28.sp,
                 color = Color.White)
         }
-        Button(onClick = { /*TODO*/ },
+        Button(onClick = {
+            val intent = Intent(context, CursosActivity::class.java)
+            context.startActivity(intent) },
             modifier = Modifier
                 .width(160.dp)
                 .height(40.dp),
