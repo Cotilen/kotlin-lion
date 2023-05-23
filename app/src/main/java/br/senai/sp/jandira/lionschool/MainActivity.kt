@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
 import br.senai.sp.jandira.lionschool.model.Cursos
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
 
@@ -47,13 +48,12 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
+class SharedViewModel : ViewModel() {
+    var myVariable: String = ""
+}
 
 @Composable
 fun Greeting(name: String) {
-    var cursos by remember{
-        mutableStateOf(Cursos("","",""))
-    }
 
     val context = LocalContext.current
 

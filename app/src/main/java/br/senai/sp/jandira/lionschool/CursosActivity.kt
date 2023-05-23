@@ -78,6 +78,7 @@ fun Greeting2() {
             val selectedTabIndex = remember { mutableStateOf(0) }
 
             TabRow(selectedTabIndex = selectedTabIndex.value) {
+
                 Tab(selected = selectedTabIndex.value == 0, onClick = { selectedTabIndex.value = 0 }) {
                     Text(text = "${cursos}")
 
