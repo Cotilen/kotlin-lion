@@ -1,20 +1,26 @@
 package br.senai.sp.jandira.lionschool
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import br.senai.sp.jandira.lionschool.model.CursosList
+import br.senai.sp.jandira.lionschool.service.RetrofitFactory
+
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import kotlin.math.log
 
 class CursosActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,26 +39,59 @@ class CursosActivity : ComponentActivity() {
     }
 }
 
+
 @Composable
 fun Greeting2() {
-    val switchState = remember { mutableStateOf(false) }
+
+    val call = RetrofitFactory().getCursosService().getCursos()
+
+    var cursos by remember{
+        mutableStateOf(listOf<br.senai.sp.jandira.lionschool.model.Cursos>())
+    }
+
+    call.enqueue(object : Callback<CursosList> {
+        override fun onResponse(
+            call: Call<CursosList>,
+            response: Response<CursosList>
+        ) {
+            //Duas exclamações seignificam que pode vir nulo
+            cursos = response.body()!!.cursos
+
+        }
+
+        override fun onFailure(call: Call<CursosList>, t: Throwable) {
+            Log.i(
+                "ds2m",
+                "onFailure: ${t.message}"
+            )
+        }
+
+    })
+
+    Log.d("v","${cursos}")
+
 
     Column(modifier = Modifier.background(Color(0,76,153))) {
-      // Estado para controlar o valor do Switch
 
-      Switch(
-          checked = switchState.value,
-          onCheckedChange = { isChecked ->
-              switchState.value = isChecked
-          },
-          modifier = Modifier.width(310.dp).height(30.dp),
-          colors = SwitchDefaults.colors(
-              checkedThumbColor = Color.Blue,
-              uncheckedThumbColor = Color.Blue,
-              checkedTrackColor = Color.White,
-              uncheckedTrackColor = Color.White
-          ),
-      )
+
+        Column(modifier = Modifier.fillMaxSize()) {
+            val selectedTabIndex = remember { mutableStateOf(0) }
+
+            TabRow(selectedTabIndex = selectedTabIndex.value) {
+                Tab(selected = selectedTabIndex.value == 0, onClick = { selectedTabIndex.value = 0 }) {
+                    Text(text = "${cursos}")
+
+                    Icon(painter = painterResource(id = R.drawable.logo_image), contentDescription = "")
+                }
+                Tab(selected = selectedTabIndex.value == 1, onClick = { selectedTabIndex.value = 1 }) {
+                    Text(text = "Tab 2")
+                }
+
+            }
+
+        }
+
+
   }
 }
 

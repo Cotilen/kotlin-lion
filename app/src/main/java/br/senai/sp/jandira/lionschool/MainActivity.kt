@@ -11,7 +11,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -28,6 +28,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.lionschool.model.Cursos
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
 
 class MainActivity : ComponentActivity() {
@@ -50,6 +51,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String) {
+    var cursos by remember{
+        mutableStateOf(Cursos("","",""))
+    }
+
     val context = LocalContext.current
 
     Column(modifier = Modifier
@@ -74,7 +79,8 @@ fun Greeting(name: String) {
         }
         Button(onClick = {
             val intent = Intent(context, CursosActivity::class.java)
-            context.startActivity(intent) },
+            context.startActivity(intent)
+                         },
             modifier = Modifier
                 .width(160.dp)
                 .height(40.dp),
