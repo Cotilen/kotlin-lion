@@ -1,4 +1,5 @@
 package br.senai.sp.jandira.lionschool
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -357,7 +358,7 @@ fun Greeting2() {
                                                 if (response.body() != null) {
                                                     alunos = response.body()!!.alunos;
                                                 } else {
-                                                    Toast.makeText(context, "Não existem alunos que concluiram ou concluirão neste ano", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(context, "Não existem alunos  neste ano", Toast.LENGTH_LONG).show()
                                                 }
                                             }
 
@@ -384,7 +385,7 @@ fun Greeting2() {
                                                 if (response.body() != null) {
                                                     alunos = response.body()!!.alunos;
                                                 } else {
-                                                    Toast.makeText(context, "Não existem alunos que concluiram ou concluirão neste ano", Toast.LENGTH_LONG).show()
+                                                    Toast.makeText(context, "Não existem alunos neste ano", Toast.LENGTH_LONG).show()
                                                 }
                                             }
 
@@ -415,6 +416,7 @@ fun Greeting2() {
                     }
                 }
 
+                //Cards de Alunos
                 LazyColumn(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
                     items(alunos) {
                         Card(
@@ -422,7 +424,11 @@ fun Greeting2() {
                                 .width(350.dp)
                                 .padding(top = 8.dp),
                             shape = RoundedCornerShape(20.dp),
-                            backgroundColor = Color.White
+                            backgroundColor = Color.White,
+                            onClick = {
+                                val intent = Intent(context, AlunoActivity::class.java)
+                                intent.putExtra("Matricula",it.matricula)
+                                context.startActivity(intent)}
                         ) {
                             Row(modifier = Modifier.padding(8.dp)) {
                                 Card(shape = CircleShape) {
