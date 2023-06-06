@@ -10,11 +10,11 @@ interface AlunosService {
     fun getAlunos():Call<AlunosList>
 
     @GET("alunos")
-    fun getStatus(@Query("status") status: String):Call<AlunosList>
+    fun getStatus(@Query("curso") curso: String,@Query("status") status: String):Call<AlunosList>
 
     @GET("alunos")
     fun getCurso(@Query("curso") curso: String):Call<AlunosList>
 
     @GET("alunos")
-    fun getConclusao(@Query("conclusao") conclusao: String):Call<AlunosList>
+    fun getConclusao(@Query("curso") curso: String,@Query("status") status: String,@Query("conclusao") conclusao: String,):Call<AlunosList>
 }

@@ -4,4 +4,5 @@
     <string name="teacher">Teacher</string>
     <string name="GetStart">Get Started</string>
     <string name="title_activity_cursos">cursos</string>
+    <string name="title_activity_alert">alert</string>
 </resources>

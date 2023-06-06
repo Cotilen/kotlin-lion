@@ -1,12 +1,11 @@
 package br.senai.sp.jandira.lionschool
-
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,10 +17,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -32,11 +30,12 @@ import br.senai.sp.jandira.lionschool.service.RetrofitFactory
 
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
 import coil.compose.AsyncImage
-import kotlinx.coroutines.delay
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.math.log
+
+
 
 class CursosActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,10 +54,11 @@ class CursosActivity : ComponentActivity() {
     }
 }
 
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun Greeting2() {
+
+    val context = LocalContext.current
 
     val call = RetrofitFactory().getCursosService().getCursos()
 
@@ -109,33 +109,14 @@ fun Greeting2() {
 
     })
 
-    val callAlunos = RetrofitFactory().getAlunosService().getAlunos()
-
     var alunos by remember {
         mutableStateOf(listOf<br.senai.sp.jandira.lionschool.model.Alunos>())
     }
 
-    //Call Alunos
-    callAlunos.enqueue(object : Callback<AlunosList> {
-        override fun onResponse(
-            call: Call<AlunosList>,
-            response: Response<AlunosList>
-        ) {
-            //Duas exclamações seignificam que pode vir nulo
-            alunos = response.body()!!.alunos;
-        }
-
-        override fun onFailure(call: Call<AlunosList>, t: Throwable) {
-            Log.i(
-                "ds2m",
-                "onFailure: ${t.message}"
-            )
-        }
-    })
 
     Column(modifier = Modifier.background(Color(0, 76, 153))) {
 
-        if (alunos.isNotEmpty()) {
+        if (cursos.isNotEmpty()) {
             Log.d("v", conclusao.toString())
             Log.d("v", alunos.toString())
 
@@ -146,9 +127,30 @@ fun Greeting2() {
 
                     Tab(
                         selected = selectedTabIndex.value == 0,
-                        onClick = { selectedTabIndex.value = 0 }) {
+                        onClick = { selectedTabIndex.value = 0
+
+                            val callAlunos = RetrofitFactory().getAlunosService().getCurso("DS")
+
+                            //Call Alunos
+                            callAlunos.enqueue(object : Callback<AlunosList> {
+                                override fun onResponse(
+                                    call: Call<AlunosList>,
+                                    response: Response<AlunosList>
+                                ) {
+                                    //Duas exclamações seignificam que pode vir nulo
+                                    alunos = response.body()!!.alunos;
+                                }
+
+                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                    Log.i(
+                                        "ds2m",
+                                        "onFailure: ${t.message}"
+                                    )
+                                }
+                            })
+                        }) {
                         Text(
-                            text = cursos[0].nome.toString(),
+                            text = cursos[0].nome,
                             fontSize = 18.sp,
                             textAlign = TextAlign.Center
                         )
@@ -156,9 +158,31 @@ fun Greeting2() {
                     }
                     Tab(
                         selected = selectedTabIndex.value == 1,
-                        onClick = { selectedTabIndex.value = 1 }) {
+                        onClick = { selectedTabIndex.value = 1
+
+                            val callAlunos = RetrofitFactory().getAlunosService().getCurso("RDS")
+
+                            //Call Alunos
+                            callAlunos.enqueue(object : Callback<AlunosList> {
+                                override fun onResponse(
+                                    call: Call<AlunosList>,
+                                    response: Response<AlunosList>
+                                ) {
+                                    //Duas exclamações seignificam que pode vir nulo
+                                    alunos = response.body()!!.alunos;
+                                }
+
+                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                    Log.i(
+                                        "ds2m",
+                                        "onFailure: ${t.message}"
+                                    )
+                                }
+                            })
+
+                        }) {
                         Text(
-                            text = cursos[1].nome.toString(),
+                            text = cursos[1].nome,
                             fontSize = 18.sp,
                             textAlign = TextAlign.Center
                         )
@@ -175,12 +199,58 @@ fun Greeting2() {
                 )
                 {
                     Chip(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            val callAlunos = RetrofitFactory().getAlunosService()
+                                .getStatus("DS", "Finalizado")
+                            Log.d("v", "DS Finalizado")
+
+                            //Call Alunos
+                            callAlunos.enqueue(object : Callback<AlunosList> {
+                                override fun onResponse(
+                                    call: Call<AlunosList>,
+                                    response: Response<AlunosList>
+                                ) {
+                                    //Duas exclamações seignificam que pode vir nulo
+                                    alunos = response.body()!!.alunos;
+                                }
+
+                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                    Log.i(
+                                        "ds2m",
+                                        "onFailure: ${t.message}"
+                                    )
+                                }
+                            })
+
+                            if (selectedTabIndex.value == 1) {
+                                val callAlunos = RetrofitFactory().getAlunosService()
+                                    .getStatus("RDS", "Finalizado")
+
+                                //Call Alunos
+                                callAlunos.enqueue(object : Callback<AlunosList> {
+                                    override fun onResponse(
+                                        call: Call<AlunosList>,
+                                        response: Response<AlunosList>
+                                    ) {
+                                        //Duas exclamações seignificam que pode vir nulo
+                                        alunos = response.body()!!.alunos;
+                                    }
+
+                                    override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                        Log.i(
+                                            "ds2m",
+                                            "onFailure: ${t.message}"
+                                        )
+                                    }
+                                })
+                            }
+
+                             },
                         border = BorderStroke(2.dp, Color.Black),
                         colors = ChipDefaults.chipColors(Color(241, 185, 69))
                     ) {
                         Text(
-                            text = "Nome1",
+                            text = "Finalizado",
                             modifier = Modifier.width(100.dp),
                             textAlign = TextAlign.Center,
                             color = Color(51, 71, 176)
@@ -189,12 +259,57 @@ fun Greeting2() {
                     }
 
                     Chip(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            val callAlunos = RetrofitFactory().getAlunosService()
+                                .getStatus("DS", "Cursando")
+                            Log.d("v", "DS Cursando")
+
+                            //Call Alunos
+                            callAlunos.enqueue(object : Callback<AlunosList> {
+                                override fun onResponse(
+                                    call: Call<AlunosList>,
+                                    response: Response<AlunosList>
+                                ) {
+                                    //Duas exclamações seignificam que pode vir nulo
+                                    alunos = response.body()!!.alunos;
+                                }
+
+                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                    Log.i(
+                                        "ds2m",
+                                        "onFailure: ${t.message}"
+                                    )
+                                }
+                            })
+
+                            if (selectedTabIndex.value == 1) {
+                                val callAlunos = RetrofitFactory().getAlunosService()
+                                    .getStatus("RDS", "Cursando")
+
+                                //Call Alunos
+                                callAlunos.enqueue(object : Callback<AlunosList> {
+                                    override fun onResponse(
+                                        call: Call<AlunosList>,
+                                        response: Response<AlunosList>
+                                    ) {
+                                        //Duas exclamações seignificam que pode vir nulo
+                                        alunos = response.body()!!.alunos;
+                                        Log.d("bc", alunos.toString())
+                                    }
+
+                                    override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                        Log.i(
+                                            "ds2m",
+                                            "onFailure: ${t.message}"
+                                        )
+                                    }
+                                })
+                            } },
                         border = BorderStroke(2.dp, Color.Black),
                         colors = ChipDefaults.chipColors(Color(241, 185, 69))
                     ) {
                         Text(
-                            text = "Nome 2",
+                            text = "Cursando",
                             modifier = Modifier.width(100.dp),
                             textAlign = TextAlign.Center,
                             color = Color(51, 71, 176)
@@ -211,6 +326,7 @@ fun Greeting2() {
                     color = Color.White
                 )
 
+                //Chips Conclusão
                 Row(
                     modifier = Modifier
                         .padding(top = 15.dp, end = 15.dp)
@@ -220,8 +336,68 @@ fun Greeting2() {
                     LazyRow() {
                         items(conclusao[0].ano) {
 
+                            Log.d("as",selectedTabIndex.value.toString())
                             Chip(
-                                onClick = { /*TODO*/ },
+                                onClick = {
+
+
+                                    if (selectedTabIndex.value == 1){
+                                        val callAlunos = RetrofitFactory().getAlunosService()
+                                            .getConclusao("RDS","Cursando",it)
+                                        Log.d("as","RDS Cursando")
+
+                                        //Call Alunos
+                                        callAlunos.enqueue(object : Callback<AlunosList> {
+                                            override fun onResponse(
+                                                call: Call<AlunosList>,
+                                                response: Response<AlunosList>
+                                            ) {
+                                                //Duas exclamações seignificam que pode vir nulo
+
+                                                if (response.body() != null) {
+                                                    alunos = response.body()!!.alunos;
+                                                } else {
+                                                    Toast.makeText(context, "Não existem alunos que concluiram ou concluirão neste ano", Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                                Log.i(
+                                                    "ds2m",
+                                                    "onFailure: ${t.message}"
+                                                )
+                                            }
+                                        })
+
+                                    }else{
+                                        val callAlunos = RetrofitFactory().getAlunosService()
+                                            .getConclusao("DS","Cursando",it)
+
+                                        //Call Alunos
+                                        callAlunos.enqueue(object : Callback<AlunosList> {
+                                            override fun onResponse(
+                                                call: Call<AlunosList>,
+                                                response: Response<AlunosList>
+                                            ) {
+                                                //Duas exclamações seignificam que pode vir nulo
+
+                                                if (response.body() != null) {
+                                                    alunos = response.body()!!.alunos;
+                                                } else {
+                                                    Toast.makeText(context, "Não existem alunos que concluiram ou concluirão neste ano", Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+
+                                            override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                                Log.i(
+                                                    "ds2m",
+                                                    "onFailure: ${t.message}"
+                                                )
+                                            }
+                                        })
+                                    }
+
+                                },
                                 modifier = Modifier.padding(5.dp),
                                 border = BorderStroke(1.dp, Color.Black),
                                 colors = ChipDefaults.chipColors(Color.White)
@@ -245,7 +421,8 @@ fun Greeting2() {
                             modifier = Modifier
                                 .width(350.dp)
                                 .padding(top = 8.dp),
-                            shape = RoundedCornerShape(20.dp)
+                            shape = RoundedCornerShape(20.dp),
+                            backgroundColor = Color.White
                         ) {
                             Row(modifier = Modifier.padding(8.dp)) {
                                 Card(shape = CircleShape) {
