@@ -6,4 +6,5 @@
     <string name="title_activity_cursos">cursos</string>
     <string name="title_activity_alert">alert</string>
     <string name="title_activity_aluno">AlunoActivity</string>
+    <string name="title_activity_chart">Chart</string>
 </resources>

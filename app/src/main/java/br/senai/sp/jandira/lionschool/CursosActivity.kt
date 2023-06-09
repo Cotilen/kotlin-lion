@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,7 +118,7 @@ fun Greeting2() {
 
     Column(modifier = Modifier.background(Color(0, 76, 153))) {
 
-        if (cursos.isNotEmpty()) {
+        if (cursos.isNotEmpty() && conclusao.isNotEmpty()) {
             Log.d("v", conclusao.toString())
             Log.d("v", alunos.toString())
 
@@ -427,10 +428,10 @@ fun Greeting2() {
                             backgroundColor = Color.White,
                             onClick = {
                                 val intent = Intent(context, AlunoActivity::class.java)
-                                intent.putExtra("Matricula",it.matricula)
+                                intent.putExtra("matricula",it.matricula)
                                 context.startActivity(intent)}
                         ) {
-                            Row(modifier = Modifier.padding(8.dp)) {
+                            Row(modifier = Modifier.padding(8.dp), verticalAlignment =Alignment.CenterVertically ) {
                                 Card(shape = CircleShape) {
                                     AsyncImage(
                                         model = it.foto,
@@ -441,8 +442,9 @@ fun Greeting2() {
                                 Spacer(modifier = Modifier.width(16.dp))
 
                                 Column {
-                                    Text(text = it.nome,
-                                        fontSize = 18.sp,
+                                    Text(text = it.nome.uppercase(),
+                                        fontSize = 16.sp,
+                                        modifier = Modifier.width(200.dp),
                                         color = Color.Black,
                                         fontWeight = FontWeight.Bold)
                                     Text(text = it.matricula,
@@ -454,12 +456,20 @@ fun Greeting2() {
                                         color = Color.Black,
                                         fontWeight = FontWeight.Bold)
                                 }
+
+                                Icon(painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), contentDescription = "")
+
                             }
+
                         }
                     }
                 }
 
             }
+        }
+        else {
+            Text(text = "Carregando",
+                fontSize = 40.sp)
         }
     }
 }

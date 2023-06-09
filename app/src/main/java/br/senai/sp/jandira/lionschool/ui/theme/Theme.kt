@@ -42,3 +42,4 @@ fun LionSchoolTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
         content = content
     )
 }
+
