@@ -81,7 +81,7 @@ fun Greeting2() {
             response: Response<CursosList>
         ) {
             //Duas exclamações seignificam que pode vir nulo
-            cursos = response.body()!!.cursos;
+            cursos = response.body()!!.cursos
         }
 
         override fun onFailure(call: Call<CursosList>, t: Throwable) {
@@ -99,7 +99,7 @@ fun Greeting2() {
             response: Response<ConclusaoList>
         ) {
             //Duas exclamações seignificam que pode vir nulo
-            conclusao = response.body()!!.conclusao;
+            conclusao = response.body()!!.conclusao
         }
 
         override fun onFailure(call: Call<ConclusaoList>, t: Throwable) {
@@ -125,7 +125,10 @@ fun Greeting2() {
             Column(modifier = Modifier.fillMaxSize()) {
                 val selectedTabIndex = remember { mutableStateOf(0) }
 
-                TabRow(selectedTabIndex = selectedTabIndex.value) {
+                TabRow(selectedTabIndex = selectedTabIndex.value,
+                        backgroundColor = Color.Black,
+                    contentColor = Color.White
+                ) {
 
                     Tab(
                         selected = selectedTabIndex.value == 0,
@@ -140,7 +143,7 @@ fun Greeting2() {
                                     response: Response<AlunosList>
                                 ) {
                                     //Duas exclamações seignificam que pode vir nulo
-                                    alunos = response.body()!!.alunos;
+                                    alunos = response.body()!!.alunos
                                 }
 
                                 override fun onFailure(call: Call<AlunosList>, t: Throwable) {
@@ -171,7 +174,7 @@ fun Greeting2() {
                                     response: Response<AlunosList>
                                 ) {
                                     //Duas exclamações seignificam que pode vir nulo
-                                    alunos = response.body()!!.alunos;
+                                    alunos = response.body()!!.alunos
                                 }
 
                                 override fun onFailure(call: Call<AlunosList>, t: Throwable) {
@@ -202,31 +205,30 @@ fun Greeting2() {
                 {
                     Chip(
                         onClick = {
-                            val callAlunos = RetrofitFactory().getAlunosService()
-                                .getStatus("DS", "Finalizado")
-                            Log.d("v", "DS Finalizado")
-
-                            //Call Alunos
-                            callAlunos.enqueue(object : Callback<AlunosList> {
-                                override fun onResponse(
-                                    call: Call<AlunosList>,
-                                    response: Response<AlunosList>
-                                ) {
-                                    //Duas exclamações seignificam que pode vir nulo
-                                    alunos = response.body()!!.alunos;
-                                }
-
-                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
-                                    Log.i(
-                                        "ds2m",
-                                        "onFailure: ${t.message}"
-                                    )
-                                }
-                            })
-
                             if (selectedTabIndex.value == 1) {
-                                val callAlunos = RetrofitFactory().getAlunosService()
+                                val callAlunosFinalizado = RetrofitFactory().getAlunosService()
                                     .getStatus("RDS", "Finalizado")
+
+                                //Call Alunos
+                                callAlunosFinalizado.enqueue(object : Callback<AlunosList> {
+                                    override fun onResponse(
+                                        call: Call<AlunosList>,
+                                        response: Response<AlunosList>
+                                    ) {
+                                        //Duas exclamações seignificam que pode vir nulo
+                                        alunos = response.body()!!.alunos
+                                    }
+
+                                    override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                        Log.i(
+                                            "ds2m",
+                                            "onFailure: ${t.message}"
+                                        )
+                                    }
+                                })
+                            }else{
+                                val callAlunos = RetrofitFactory().getAlunosService()
+                                    .getStatus("DS", "Finalizado")
 
                                 //Call Alunos
                                 callAlunos.enqueue(object : Callback<AlunosList> {
@@ -235,7 +237,7 @@ fun Greeting2() {
                                         response: Response<AlunosList>
                                     ) {
                                         //Duas exclamações seignificam que pode vir nulo
-                                        alunos = response.body()!!.alunos;
+                                        alunos = response.body()!!.alunos
                                     }
 
                                     override fun onFailure(call: Call<AlunosList>, t: Throwable) {
@@ -262,41 +264,18 @@ fun Greeting2() {
 
                     Chip(
                         onClick = {
-                            val callAlunos = RetrofitFactory().getAlunosService()
-                                .getStatus("DS", "Cursando")
-                            Log.d("v", "DS Cursando")
-
-                            //Call Alunos
-                            callAlunos.enqueue(object : Callback<AlunosList> {
-                                override fun onResponse(
-                                    call: Call<AlunosList>,
-                                    response: Response<AlunosList>
-                                ) {
-                                    //Duas exclamações seignificam que pode vir nulo
-                                    alunos = response.body()!!.alunos;
-                                }
-
-                                override fun onFailure(call: Call<AlunosList>, t: Throwable) {
-                                    Log.i(
-                                        "ds2m",
-                                        "onFailure: ${t.message}"
-                                    )
-                                }
-                            })
-
                             if (selectedTabIndex.value == 1) {
-                                val callAlunos = RetrofitFactory().getAlunosService()
+                                val callAlunosCursando = RetrofitFactory().getAlunosService()
                                     .getStatus("RDS", "Cursando")
 
                                 //Call Alunos
-                                callAlunos.enqueue(object : Callback<AlunosList> {
+                                callAlunosCursando.enqueue(object : Callback<AlunosList> {
                                     override fun onResponse(
                                         call: Call<AlunosList>,
                                         response: Response<AlunosList>
                                     ) {
                                         //Duas exclamações seignificam que pode vir nulo
-                                        alunos = response.body()!!.alunos;
-                                        Log.d("bc", alunos.toString())
+                                        alunos = response.body()!!.alunos
                                     }
 
                                     override fun onFailure(call: Call<AlunosList>, t: Throwable) {
@@ -306,7 +285,30 @@ fun Greeting2() {
                                         )
                                     }
                                 })
-                            } },
+                            }else{
+                                val callAlunos = RetrofitFactory().getAlunosService()
+                                    .getStatus("DS", "Cursando")
+
+                                //Call Alunos
+                                callAlunos.enqueue(object : Callback<AlunosList> {
+                                    override fun onResponse(
+                                        call: Call<AlunosList>,
+                                        response: Response<AlunosList>
+                                    ) {
+                                        //Duas exclamações seignificam que pode vir nulo
+                                        alunos = response.body()!!.alunos
+                                    }
+
+                                    override fun onFailure(call: Call<AlunosList>, t: Throwable) {
+                                        Log.i(
+                                            "ds2m",
+                                            "onFailure: ${t.message}"
+                                        )
+                                    }
+                                })
+                            }
+
+                                  },
                         border = BorderStroke(2.dp, Color.Black),
                         colors = ChipDefaults.chipColors(Color(241, 185, 69))
                     ) {
@@ -335,7 +337,7 @@ fun Greeting2() {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround
                 ) {
-                    LazyRow() {
+                    LazyRow {
                         items(conclusao[0].ano) {
 
                             Log.d("as",selectedTabIndex.value.toString())
@@ -357,7 +359,7 @@ fun Greeting2() {
                                                 //Duas exclamações seignificam que pode vir nulo
 
                                                 if (response.body() != null) {
-                                                    alunos = response.body()!!.alunos;
+                                                    alunos = response.body()!!.alunos
                                                 } else {
                                                     Toast.makeText(context, "Não existem alunos  neste ano", Toast.LENGTH_LONG).show()
                                                 }
@@ -384,7 +386,7 @@ fun Greeting2() {
                                                 //Duas exclamações seignificam que pode vir nulo
 
                                                 if (response.body() != null) {
-                                                    alunos = response.body()!!.alunos;
+                                                    alunos = response.body()!!.alunos
                                                 } else {
                                                     Toast.makeText(context, "Não existem alunos neste ano", Toast.LENGTH_LONG).show()
                                                 }
@@ -457,7 +459,10 @@ fun Greeting2() {
                                         fontWeight = FontWeight.Bold)
                                 }
 
-                                Icon(painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24), contentDescription = "")
+                                Icon(
+                                    painter = painterResource(id = R.drawable.baseline_arrow_forward_ios_24),
+                                    contentDescription = "",
+                                    tint = Color.Black)
 
                             }
 
@@ -468,8 +473,18 @@ fun Greeting2() {
             }
         }
         else {
-            Text(text = "Carregando",
-                fontSize = 40.sp)
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(48.dp),
+                    color = Color.Black
+                )
+            }
+
         }
     }
 }
