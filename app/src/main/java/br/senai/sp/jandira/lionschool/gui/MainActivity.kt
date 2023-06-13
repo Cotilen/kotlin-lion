@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.lionschool
+package br.senai.sp.jandira.lionschool.gui
 
 import android.content.Intent
 import android.os.Bundle
@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.senai.sp.jandira.lionschool.R
 import br.senai.sp.jandira.lionschool.ui.theme.LionSchoolTheme
 
 class MainActivity : ComponentActivity() {
