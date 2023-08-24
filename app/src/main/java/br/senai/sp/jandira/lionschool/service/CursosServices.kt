@@ -8,8 +8,8 @@ import retrofit2.http.Query
 
 interface CursosServices {
     //https://api-lionschool.onrender.com/v1/lion-school/cursos/
-    @GET("cursos")
-    fun getCursos(): Call<CursosList>
+    @GET("login/gestante")
+    fun getCursos(@Query("email") email: String, @Query("senha") senha: String): Call<CursosList>
 
 
 }

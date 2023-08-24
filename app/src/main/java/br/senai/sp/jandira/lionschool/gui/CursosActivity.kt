@@ -64,7 +64,7 @@ fun Greeting2() {
 
     val context = LocalContext.current
 
-    val call = RetrofitFactory().getCursosService().getCursos()
+    val call = RetrofitFactory().getCursosService().getCursos("kaue@gmaissddfl.com","eusoubrox")
 
     var cursos by remember {
         mutableStateOf(listOf<br.senai.sp.jandira.lionschool.model.Cursos>())
@@ -81,11 +81,11 @@ fun Greeting2() {
         override fun onResponse(
             call: Call<CursosList>,
             response: Response<CursosList>
+
         ) {
             //Duas exclamações seignificam que pode vir nulo
-            cursos = response.body()!!.especialidades
+            cursos = response.body()!!.login
 
-            Log.d("111","${cursos}")
         }
 
         override fun onFailure(call: Call<CursosList>, t: Throwable) {
@@ -96,6 +96,11 @@ fun Greeting2() {
         }
 
     })
+    if (cursos.isNotEmpty()){
+        Log.d("111","${cursos}")
+    }else{
+
+    }
 
 //    callConclusao.enqueue(object : Callback<ConclusaoList> {
 //        override fun onResponse(
